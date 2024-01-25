@@ -7,9 +7,9 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { auth } from "../firebase/firebase";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/userSlice";
+import { Bg_IMG } from "../utils/constants";
 
 const Login = () => {
   const [isSignin, setIsSignin] = useState(true);
@@ -17,8 +17,7 @@ const Login = () => {
   const email = useRef(null);
   const password = useRef(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const navigate = useNavigate();
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const handleToggle = () => {
     setIsSignin(!isSignin);
@@ -44,10 +43,15 @@ const Login = () => {
               "https://static.vecteezy.com/system/resources/previews/019/896/008/original/male-user-avatar-icon-in-flat-design-style-person-signs-illustration-png.png",
           })
             .then(() => {
-              const {uid,email,displayName,photoURL} = auth.currentUser;
-              console.log(auth.currentUser)
-              dispatch(addUser({uid:uid,email:email,displayName:displayName,photoURL:photoURL}))
-              navigate("/browse");
+              const { uid, email, displayName, photoURL } = auth.currentUser;
+              dispatch(
+                addUser({
+                  uid: uid,
+                  email: email,
+                  displayName: displayName,
+                  photoURL: photoURL,
+                })
+              );
             })
             .catch((error) => {
               setErrorMessage(error.message);
@@ -56,7 +60,6 @@ const Login = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(error);
           setErrorMessage(errorMessage);
         });
     } else {
@@ -67,7 +70,6 @@ const Login = () => {
       )
         .then((userCredential) => {
           const user = userCredential.user;
-          navigate("/browse");
         })
         .catch((error) => {
           const errorCode = error.code;
@@ -80,14 +82,11 @@ const Login = () => {
     <div className="">
       <Header />
       <div className="absolute">
-        <img
-          src="https://assets.nflxext.com/ffe/siteui/vlv3/9134db96-10d6-4a64-a619-a21da22f8999/a449fabb-05e4-4c8a-b062-b0bec7d03085/IN-en-20240115-trifectadaily-perspective_alpha_website_large.jpg"
-          alt="bg"
-        />
+        <img className="h-screen w-screen object-cover" src={Bg_IMG} alt="bg" />
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute bg-black w-1/3 my-28 mx-auto left-0 right-0 p-12 rounded bg-opacity-90"
+        className="absolute bg-black mx-4 md:w-1/3 my-28 md:mx-auto left-0 right-0 p-12 rounded bg-opacity-90"
       >
         <h1 className="text-white font-semibold text-3xl py-4">
           {isSignin ? "Login" : "Sign up"}
