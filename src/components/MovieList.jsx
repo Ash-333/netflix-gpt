@@ -23,7 +23,7 @@ const MovieList = ({ title, movies }) => {
   };
   return (
     <div className="p-4 ">
-      <h1 className={`text-lg md:text-3xl py-3 hover:cursor-pointer`}>
+      <h1 className={`text-lg md:text-3xl py-3`}>
         {title}
       </h1>
       {movies && (

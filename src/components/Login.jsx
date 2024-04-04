@@ -78,6 +78,22 @@ const Login = () => {
         });
     }
   };
+
+  const handleTestUser=()=>{
+    signInWithEmailAndPassword(
+      auth,
+      "test@user.com",
+      "Apple.234"
+    )
+      .then((userCredential) => {
+        const user = userCredential.user;
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        setErrorMessage(errorMessage);
+      });
+  }
   return (
     <div className="">
       <Header />
@@ -86,7 +102,7 @@ const Login = () => {
       </div>
       <form
         onSubmit={(e) => e.preventDefault()}
-        className="absolute bg-black mx-4 md:w-1/3 my-28 md:mx-auto left-0 right-0 p-12 rounded bg-opacity-90"
+        className="absolute bg-black mx-4 md:w-1/3 my-20 md:mx-auto left-0 right-0 p-12 rounded bg-opacity-90"
       >
         <h1 className="text-white font-semibold text-3xl py-4">
           {isSignin ? "Login" : "Sign up"}
@@ -128,6 +144,7 @@ const Login = () => {
           </span>
           .
         </p>
+        <button className="p-4 my-4 bg-white text-red-600 font-semibold w-full rounded hover:bg-red-700 hover:text-white" onClick={handleTestUser}>Test User</button>
       </form>
     </div>
   );
