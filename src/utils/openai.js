@@ -1,11 +1,10 @@
-import OpenAI from 'openai';
-import conf from '../conf/conf';
-
-
+import OpenAI from "openai";
+import conf from "../conf/conf";
 
 const openai = new OpenAI({
-  apiKey: conf.openAIKey, 
-  dangerouslyAllowBrowser:true
+  baseURL: "https://api.deepseek.com",
+  apiKey: conf.openAIKey,
+  dangerouslyAllowBrowser: true,
 });
 
-export default openai
+export default openai;

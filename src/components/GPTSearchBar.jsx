@@ -1,9 +1,12 @@
 import React from "react";
-import openai from "../utils/openai";
 import { useRef } from "react";
 import { options } from "../utils/constants";
 import { useDispatch } from "react-redux";
 import { addGPTMovies } from "../utils/gptSlice";
+
+// const { GoogleGenerativeAI } = require("@google/generative-ai");
+import conf from "../conf/conf";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const GPTSearchBar = () => {
   const searchText = useRef(null);
@@ -23,12 +26,16 @@ const GPTSearchBar = () => {
       searchText.current.value +
       " only give me names of 5 movies, comma seprated like example result give ahead. Example Result: Gaddar, OMG, Don, Koi Mil gaya, Hum saath saath hai"; // Your query here
 
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: query }],
-      model: "gpt-3.5-turbo",
-    });
+    const genAI = new GoogleGenerativeAI(conf.geminiAIKey);
+    const model = genAI.getGenerativeModel({ model: "gemini-1.0-pro" });
+    const result = await model.generateContent(query);
+    console.log(result.response.text());
 
-    const gptMovies = chatCompletion.choices[0].message.content.split(',');
+    const chatCompletion =
+      result.response.text() ||
+      "Gaddar, OMG, Don, Koi Mil gaya, Hum saath saath hai";
+
+    const gptMovies = chatCompletion.split(",");
 
     const promiseArray = gptMovies.map((movie) => getMovie(movie));
 
